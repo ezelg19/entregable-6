@@ -18,7 +18,8 @@ class Mensajes{
     async getAll(){
         try{
             let contenido = await fs.promises.readFile(this.ruta, 'utf-8')
-            return JSON.parse(contenido)
+            let contParse = await JSON.parse(contenido)
+            return contParse
         }
         catch(error){
             console.log(error)

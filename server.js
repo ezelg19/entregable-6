@@ -39,18 +39,17 @@ httpServer.listen(PORT, () => { console.log(`escuchando ${PORT}`) } )
 io.on('connection', (socket)=>{
     users ++
     console.log(`usuario ${socket.id} conectado. N°:${users}`)
-    socket.on('respuesta', () => { 
+    socket.on('respuesta', async() => { 
         io.sockets.emit('array', productos.getAll()) 
-        io.sockets.emit('mensajes', mensajes.getAll())
+        io.sockets.emit('mensajes', await mensajes.getAll())
     })
     socket.on('newProduct', data => {
         productos.save(data)
         io.sockets.emit('array', productos.getAll()) 
     })
-    socket.on('newMensaje', data => {
-        console.log('llego mensaje')
+    socket.on('newMensaje', async data => {
         mensajes.save(data)
-        io.sockets.emit('mensajes',mensajes.getAll())
+        io.sockets.emit('mensajes',await mensajes.getAll())
     })
     socket.on('disconnect', () => { console.log('user disconnected'), users-- } )
 })
